@@ -2,12 +2,102 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'" />
     <title>ImageShrinker</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" type="text/css" href="./css/all.min.css" >
+    <link rel="stylesheet" type="text/css" href="./css/materialize.min.css" >
+    <link rel="stylesheet" type="text/css" href="./css/style.css" >  
   </head>
   <body>
-    <h1>ImageShrinker 1</h1>
+    <div class="container center-align">
+      <h3><i class="fas fa-image"></i> ImageShrinker</h3>
+      <p>Choose an image to resize</p>
+      <form id="image-form">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Browse</span>
+            <input type="text" id="img" />
+          </div>
+
+          <div class="file-path-wrapper">
+            <input
+              type="file"
+              class="file-path validate"
+              placeholder="Upload File"
+            />
+          </div>
+        </div>
+        <p>
+          <strong>Quality : </strong>
+          <em>The Lower Quality the smaller the file size</em>
+        </p>
+        <p class="range-field">
+          <input type="range" min="0" max="100" id="slider" />
+        </p>
+
+        <input type="submit" value="resize" class="btn black" />
+      </form>
+
+      <div class="card output">
+        <div class="card-content">
+          Output Path : <span id="output-path"></span>
+        </div>
+      </div>
+    </div>
+    <script src="js/materialize.min.js"></script>
   </body>
 </html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+  <div class="container center-align">
+    <h3><i class="fas fa-image"></i> ImageShrinker</h3>
+    <p>Choose an image to resize</p>
+    <form id="image-form">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>Browse</span>
+          <input type="text" id="img" />
+        </div>
+
+        <div class="file-path-wrapper">
+          <input
+            type="file"
+            class="file-path validate"
+            placeholder="Upload File"
+          />
+        </div>
+      </div>
+      <p>
+        <strong>Quality : </strong>
+        <em>The Lower Quality the smaller the file size</em>
+      </p>
+      <p class="range-field">
+        <input type="range" min="0" max="100" id="slider" />
+      </p>
+
+      <input type="submit" value="resize" class="btn black" />
+    </form>
+
+    <div class="card output">
+      <div class="card-content">
+        Output Path : <span id="output-path"></span>
+      </div>
+    </div>
+  </div>
+  <script src="js/materialize.min.js"></script>
+</body>
+   
+</html> -->
