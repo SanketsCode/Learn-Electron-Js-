@@ -17,14 +17,14 @@
         <div class="file-field input-field">
           <div class="btn">
             <span>Browse</span>
-            <input type="text" id="img" />
+            <input type="file" id="img" />
           </div>
 
           <div class="file-path-wrapper">
             <input
-              type="file"
+              type="text"
               class="file-path validate"
-              placeholder="Upload File"
+              placeholder="Upload file"
             />
           </div>
         </div>
@@ -46,6 +46,36 @@
       </div>
     </div>
     <script src="js/materialize.min.js"></script>
+    <script>
+      const path = require('path');
+      const os = require('os');
+      const {ipcRenderer} = require('electron');
+
+      const form = document.getElementById('image-form')
+      const slider = document.getElementById('slider')
+      const img = document.getElementById('img')
+
+      document.getElementById('output-path').innerText = path.join(
+        os.homedir(),
+        'imageshrink'
+      )
+
+      //onSubmit
+      form.addEventListener('submit',e => {
+        e.preventDefault();
+        const imgPath = img.files[0].path;
+        const quality =  slider.value 
+
+        console.log(imgPath,quality);
+
+        ipcRenderer.send('image:minimize',{
+          imgPath,
+          quality
+        })
+        
+      })
+
+    </script>
   </body>
 </html>
 
