@@ -1,7 +1,14 @@
-const { app, BrowserWindow, Menu, globalShortcut, ipcMain,shell } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  globalShortcut,
+  ipcMain,
+  shell,
+} = require("electron");
 
-const path = require('path');
-const os = require('os');
+const path = require("path");
+const os = require("os");
 // const imagemin = require('imagemin');
 // const imageminMozjpeg = require('imagemin-mozjpeg');
 // const imageminPngQuant = require('imagemin-pngquant');
@@ -22,18 +29,18 @@ let aboutWindow;
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     title: "imageshrink",
-    width: isDev ? 700 :  500,
+    width: isDev ? 700 : 500,
     height: 500,
     icon: "./assets/icons/Icon_256x256.png",
     backgroundColor: "white",
     resizable: isDev ? true : false,
-    webPreferences : {
-      nodeIntegration : true,
+    webPreferences: {
+      nodeIntegration: true,
       contextIsolation: false,
-    }
+    },
   });
 
-  if(isDev){
+  if (isDev) {
     mainWindow.webContents.openDevTools();
   }
   //   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
@@ -48,8 +55,6 @@ function createAboutWindow() {
     icon: "./assets/icons/Icon_256x256.png",
     resizable: false,
   });
-
-
 
   aboutWindow.loadFile("./app/about.html");
 }
@@ -111,39 +116,35 @@ app.on("ready", () => {
   mainWindow.on("ready", () => (mainWindow = null));
 });
 
-ipcMain.on('image:minimize',(e,options) => {
-  options.dest = path.join(os.homedir(),'imageshrink');
+ipcMain.on("image:minimize", (e, options) => {
+  options.dest = path.join(os.homedir(), "imageshrink");
   shrinkImage(options);
 });
 
-
-
-
-async function shrinkImage({imgPath,quality,dest}) {
+async function shrinkImage({ imgPath, quality, dest }) {
   const pngQuality = quality / 100;
-  const imagemin = (await import('imagemin')).default;
-  const imageminMozjpeg = (await import('imagemin-mozjpeg')).default;
-  const imageminPngQuant = (await import('imagemin-pngquant')).default; 
-  const slash = (await import('slash')).default;
+  const imagemin = (await import("imagemin")).default;
+  const imageminMozjpeg = (await import("imagemin-mozjpeg")).default;
+  const imageminPngQuant = (await import("imagemin-pngquant")).default;
+  const slash = (await import("slash")).default;
   try {
-    const files = await imagemin([slash(imgPath)],{
-      destination : dest,
-      plugins : [
-        imageminMozjpeg({quality}),
+    const files = await imagemin([slash(imgPath)], {
+      destination: dest,
+      plugins: [
+        imageminMozjpeg({ quality }),
         imageminPngQuant({
-          quality : [pngQuality,pngQuality]
-        })
-      ]
+          quality: [pngQuality, pngQuality],
+        }),
+      ],
     });
     console.log(files);
-    shell.openPath(dest)
+    shell.openPath(dest);
 
+    mainWindow.webContents.send("image:done");
   } catch (error) {
     console.log(error);
-    
   }
 }
-
 
 app.on("window-all-closed", () => {
   if (!isMac) {
@@ -158,5 +159,3 @@ app.on("activate", () => {
 });
 
 app.allowRenderProcessReuse = true;
-
-

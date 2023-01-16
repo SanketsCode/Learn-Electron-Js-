@@ -4,10 +4,13 @@
     <meta charset="UTF-8" />
     <title>ImageShrinker</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <link rel="stylesheet" type="text/css" href="./css/all.min.css" >
-    <link rel="stylesheet" type="text/css" href="./css/materialize.min.css" >
-    <link rel="stylesheet" type="text/css" href="./css/style.css" >  
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline';"
+    />
+    <link rel="stylesheet" type="text/css" href="./css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/materialize.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
   </head>
   <body>
     <div class="container center-align">
@@ -47,38 +50,42 @@
     </div>
     <script src="js/materialize.min.js"></script>
     <script>
-      const path = require('path');
-      const os = require('os');
-      const {ipcRenderer} = require('electron');
+      const path = require("path");
+      const os = require("os");
+      const { ipcRenderer } = require("electron");
 
-      const form = document.getElementById('image-form')
-      const slider = document.getElementById('slider')
-      const img = document.getElementById('img')
+      const form = document.getElementById("image-form");
+      const slider = document.getElementById("slider");
+      const img = document.getElementById("img");
 
-      document.getElementById('output-path').innerText = path.join(
+      document.getElementById("output-path").innerText = path.join(
         os.homedir(),
-        'imageshrink'
-      )
+        "imageshrink"
+      );
 
       //onSubmit
-      form.addEventListener('submit',e => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
         const imgPath = img.files[0].path;
-        const quality =  slider.value 
+        const quality = slider.value;
 
-        console.log(imgPath,quality);
+        console.log(imgPath, quality);
 
-        ipcRenderer.send('image:minimize',{
+        ipcRenderer.send("image:minimize", {
           imgPath,
-          quality
-        })
-        
-      })
+          quality,
+        });
+      });
 
+      //On done
+      ipcRenderer.on("image:done", () => {
+        M.toast({
+          html: `Image Resized to ${slider.value}% Quality`,
+        });
+      });
     </script>
   </body>
 </html>
-
 
 <!-- <!DOCTYPE html>
 <html>
